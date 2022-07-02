@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title> schedule planner</title>
+    </head>
+    <body>
+      <input id="input" type="text"></input>
+      <input id="date-select" type="date"> </input>
+      <button  onclick="addTodo()">Press here</button>
+      <button id="id1" onclick = "deleteTodo()" > press to delete  </button>
+      <div id="text placer"> </div>
+        <script>
+        let  todos;
+        const savedTodos = JSON.parse(localStorage.getItem('todos'));
+        if (Array.isArray(savedTodos))
+        { 
+         todos = savedTodos ;
+        } 
+        else {todos = [ ];}
+        
+        
+         const id =''+ new Date().getTime() ;
+
+        function addTodo()
+        {  
+        let answer1 = document.getElementById('input') ;
+        let title = answer1.value ;
+        
+        let answer2 = document.getElementById('date-select');
+        let dueDate = answer2.value;
+
+        todos.push({
+            title:title,
+            dueDate:dueDate,
+            id:id 
+        })
+        document.getElementById('text placer').innerHTML='';
+        
+        todos.forEach( function render(todo){    
+         let element =  document.createElement('div');
+         element.innerText= todo.title + ' ' + todo.dueDate;
+         let button = document.createElement('button')
+         button.innerText = "press to delete";
+         button.id = todos.id;
+         button.onclick = deleteTodo;
+         element.appendChild(button);
+        document.getElementById('text placer').appendChild(element)
+         button.style = 'margin: 20px';
+          
+        })
+        savetodos()
+        }
+        function deleteTodo(event)
+        { 
+            button = event.target ;
+            const idToDelete = button.id ; 
+            
+            todos =  todos.filter(function(todo)
+            { if (todos.id=== idToDelete )
+              { 
+                return true ;
+              }
+              else 
+              {
+                return false ; 
+              }          
+            })
+        document.getElementById('text placer').innerHTML='';
+        todos. forEach ( function render(todo){    
+         let element =  document.createElement('div');
+        element.innerText= todo.title + ' ' + todo.dueDate;
+        document.getElementById('text placer').appendChild(element)
+        })
+        savetodos();
+    }
+    function savetodos()
+    {
+        localStorage.setItem('todos',JSON.stringify(todos))
+    }
+    </script>
+    </body>
+</html>
